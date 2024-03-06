@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I ( Lochlan And Monaros Project )</title>
+    <!-- Add link to the favicon -->
+    <link rel="icon" href="https://i.ibb.co/GFFZQXb/Chat-GPT-logo-svg.webp" type="image/webp">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://i.ibb.co/4ZBVPG4/istockphoto-1470617656-612x612.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+            color: #B90C81;
+        }
+        h1 {
+            font-size: 6em;
+            text-align: left;
+            margin: 20px;
+            font-weight: bold;
+        }
+        p {
+            font-size: 3em;
+            text-align: left;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .chat-container {
+            width: 50%;
+            height: 60%;
+            border: 1px solid #ccc;
+            overflow: hidden; /* Remove the scroll */
+            margin: 20px;
+            padding: 20px;
+            font-size: 1.8em; /* Decrease the font size */
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            margin-bottom: 10px;
+            font-weight: bold;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        input[type="text"] {
+            font-size: 2em;
+            margin: 20px;
+        }
+        button {
+            font-size: 2em;
+            margin: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your website content -->
+    <h1>What is AI?</h1>
+    <p>Ask "list questions" to our chatbot to list all the available questions!</p>
+
+    <!-- LochlanGPT Chat Interface -->
+    <div class="chat-container" id="chatContainer">
+        <div class="message">Welcome to LochlanGPT! Ask me anything about AI. Press Space To Look At Our Presentation!</div>
+    </div>
+    <input type="text" id="userInput" onkeydown="sendMessageOnEnter(event)">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById("userInput").value;
+            var message = document.createElement("div");
+            message.className = "message";
+            message.textContent = "User: " + userInput;
+
+            var chatContainer = document.getElementById("chatContainer");
+            chatContainer.insertBefore(message, chatContainer.firstChild); // Add message at the top
+
+            // Clear the input field
+            document.getElementById("userInput").value = "";
+
+            setTimeout(function() {
+                var response;
+                switch(userInput.toLowerCase()) {
+                    case "what is ai?":
+                        response = "AI stands for Artificial Intelligence.";
+                        break;
+                    case "how does ai work?":
+                        response = "AI works by processing large amounts of data and using algorithms to find patterns and make predictions.";
+                        break;
+                    case "can ai replace humans?":
+                        response = "AI can perform specific tasks better than humans, but it's unlikely to replace humans entirely.";
+                        break;
+                    case "what are the types of ai?":
+                        response = "The types of AI include narrow AI, general AI, and superintelligent AI.";
+                        break;
+                    case "what are the applications of ai?":
+                        response = "AI has applications in various fields such as healthcare, finance, transportation, and entertainment.";
+                        break;
+                    case "what are the ethical concerns of ai?":
+                        response = "Ethical concerns of AI include privacy, bias, job displacement, and autonomous weapons.";
+                        break;
+                    case "give me a random fact":
+                        var facts = [
+                            "The Eiffel Tower can be 15 cm taller during the summer, due to thermal expansion of the iron.",
+                            "The entire internet weighs about the same as a strawberry.",
+                            "Honey never spoils.",
+                            "Octopuses have three hearts.",
+                            "The shortest war in history lasted only 38 minutes.",
+                            "The world's largest desert is not the Sahara, it's Antarctica.",
+                            "Cows have best friends.",
+                            "Bananas are berries, but strawberries aren't.",
+                            "There are more ways to arrange a deck of cards than there are atoms on Earth.",
+                            "The shortest war in history was between Zanzibar and England in 1896. Zanzibar surrendered after 38 minutes."
+                        ];
+                        response = "Random Fact: " + facts[Math.floor(Math.random() * facts.length)];
+                        break;
+                    case "list questions":
+                        var questions = [
+                            "What is AI?",
+                            "How does AI work?",
+                            "Can AI replace humans?",
+                            "What are the types of AI?",
+                            "What are the applications of AI?",
+                            "What are the ethical concerns of AI?",
+                            "Give me a random fact"
+                        ];
+                        response = "You can ask me the following questions:";
+                        questions.forEach(function(q) {
+                            var questionMessage = document.createElement("div");
+                            questionMessage.className = "message";
+                            questionMessage.textContent = "- " + q;
+                            chatContainer.insertBefore(questionMessage, chatContainer.firstChild); // Add question at the top
+                        });
+                        break;
+                    default:
+                        // Check if the user input is a math question and calculate the result
+                        if (/^\s*-?\d+(\.\d+)?\s*[+\-*/]\s*-?\d+(\.\d+)?\s*$/.test(userInput)) {
+                            try {
+                                response = "" + eval(userInput);
+                            } catch (error) {
+                                response = "Invalid expression.";
+                            }
+                        } else {
+                            response = "Sorry, this is not hard coded yet.";
+                        }
+                }
+                var responseMessage = document.createElement("div");
+                responseMessage.className = "message";
+                responseMessage.textContent = "LochlanGPT: " + response;
+                chatContainer.insertBefore(responseMessage, chatContainer.firstChild); // Add response at the top
+            }, 2000); // 2 seconds delay
+        }
+
+        function sendMessageOnEnter(event) {
+            if (event.keyCode === 13) {
+                sendMessage();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === " " && document.activeElement !== document.getElementById("userInput")) {
+                window.location.href = "https://www.canva.com/design/DAF-lknDx5Y/MYtkMsmcF1Phczee13JR9A/view?utm_content=DAF-lknDx5Y&utm_campaign=designshare&utm_medium=link&utm_source=editor";
+            }
+        });
+    </script>
+</body>
+</html>
